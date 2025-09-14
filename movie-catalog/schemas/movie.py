@@ -2,10 +2,18 @@ from typing import Annotated
 
 from pydantic import BaseModel, Field
 
-from annotated_types import MaxLen
+from annotated_types import MaxLen, Len
 
 
 class MovieBase(BaseModel):
+    # noinspection PyTypeHints
+    slug: Annotated[
+        str,
+        Len(
+            min_length=3,
+            max_length=10,
+        ),
+    ]
     name: Annotated[
         str,
         MaxLen(20),
@@ -16,7 +24,10 @@ class MovieBase(BaseModel):
     ]
     rating: Annotated[
         int,
-        Field(ge=1, le=10),
+        Field(
+            ge=1,
+            le=10,
+        ),
     ]
 
 
@@ -30,8 +41,3 @@ class Movie(MovieBase):
     """
     Модель фильма.
     """
-
-    movie_id: Annotated[
-        int,
-        Field(ge=1),
-    ]

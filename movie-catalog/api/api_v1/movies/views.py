@@ -1,4 +1,3 @@
-import random
 from typing import Annotated
 
 from fastapi import (
@@ -31,12 +30,11 @@ def read_movies_list():
 )
 def create_movie(movie_create: MovieCreate):
     return Movie(
-        movie_id=random.randint(1, 10),
         **movie_create.model_dump(),
     )
 
 
-@router.get("/{movie_id}/")
+@router.get("/{slug}/")
 def read_movie_details(
     movie: Annotated[
         Movie,
