@@ -1,14 +1,35 @@
+import random
 from typing import Annotated
-from fastapi import Depends, APIRouter
+
+from fastapi import (
+    Depends,
+    APIRouter,
+    status,
+    Form,
+)
 
 from .crud import MOVIES
 from .dependencies import prefetch_movie
-from schemas.movie import Movie
+from schemas.movie import Movie, MovieBase
 
 router = APIRouter(
     prefix="/movies",
     tags=["Movies"],
 )
+
+
+@router.post(
+    "/",
+    response_model=Movie,
+    status_code=status.HTTP_201_CREATED,
+)
+def create_movie(
+    movie_in: Annotated[MovieBase, Form()],
+):
+    return Movie(
+        movie_id=random.randint(1, 10),
+        **movie_in.model_dump(),
+    )
 
 
 @router.get(

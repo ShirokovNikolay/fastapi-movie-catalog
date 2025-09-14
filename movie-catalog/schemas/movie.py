@@ -6,10 +6,10 @@ from annotated_types import MaxLen
 
 
 class MovieBase(BaseModel):
-    movie_id: Annotated[
-        int,
-        Field(ge=1),
-    ]
+    # movie_id: Annotated[
+    #     int,
+    #     Field(ge=1),
+    # ]
     name: Annotated[
         str,
         MaxLen(20),
@@ -28,3 +28,8 @@ class Movie(MovieBase):
     """
     Модель фильма.
     """
+
+    movie_id: Annotated[
+        int,
+        Field(ge=1),
+    ]
