@@ -6,14 +6,6 @@ from annotated_types import MaxLen, Len
 
 
 class MovieBase(BaseModel):
-    # noinspection PyTypeHints
-    slug: Annotated[
-        str,
-        Len(
-            min_length=3,
-            max_length=10,
-        ),
-    ]
     name: Annotated[
         str,
         MaxLen(20),
@@ -36,8 +28,25 @@ class MovieCreate(MovieBase):
     Модель для создания фильма.
     """
 
+    # noinspection PyTypeHints
+    slug: Annotated[
+        str,
+        Len(
+            min_length=3,
+            max_length=10,
+        ),
+    ]
+
+
+class MovieUpdate(MovieBase):
+    """
+    Модель для обновления информации о фильме.
+    """
+
 
 class Movie(MovieBase):
     """
     Модель фильма.
     """
+
+    slug: str
