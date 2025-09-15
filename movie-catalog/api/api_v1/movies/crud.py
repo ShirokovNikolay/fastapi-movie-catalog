@@ -19,7 +19,7 @@ class MovieStorage:
         self.slug_to_movie.pop(slug, None)
 
     def delete(self, movie: Movie) -> None:
-        self.delete_by_slug(movie.slug)
+        self.delete_by_slug(slug=movie.slug)
 
 
 storage = MovieStorage()
