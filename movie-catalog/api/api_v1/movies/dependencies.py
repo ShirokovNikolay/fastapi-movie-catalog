@@ -6,7 +6,7 @@ from schemas.movie import Movie
 
 
 def prefetch_movie(slug: str) -> Movie:
-    movie = storage.get_by_slug(slug)
+    movie = storage.get_by_slug(slug=slug)
     if movie:
         return movie
     raise HTTPException(
