@@ -4,23 +4,29 @@ from pydantic import BaseModel, Field
 
 from annotated_types import MaxLen, Len
 
+NameString = Annotated[
+    str,
+    MaxLen(20),
+]
+
+DescriptionString = Annotated[
+    str,
+    MaxLen(200),
+]
+
+RatingString = Annotated[
+    int,
+    Field(
+        ge=1,
+        le=10,
+    ),
+]
+
 
 class MovieBase(BaseModel):
-    name: Annotated[
-        str,
-        MaxLen(20),
-    ]
-    description: Annotated[
-        str,
-        MaxLen(200),
-    ]
-    rating: Annotated[
-        int,
-        Field(
-            ge=1,
-            le=10,
-        ),
-    ]
+    name: NameString
+    description: DescriptionString
+    rating: RatingString
 
 
 class MovieCreate(MovieBase):
@@ -42,6 +48,16 @@ class MovieUpdate(MovieBase):
     """
     Модель для обновления информации о фильме.
     """
+
+
+class MoviePartialUpdate(MovieBase):
+    """
+    Модель для частичного обновления информации о фильме.
+    """
+
+    name: NameString | None = None
+    description: DescriptionString | None = None
+    rating: RatingString | None = None
 
 
 class Movie(MovieBase):
