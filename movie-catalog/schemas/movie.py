@@ -44,6 +44,12 @@ class MovieCreate(MovieBase):
     ]
 
 
+class MovieRead(MovieBase):
+    """
+    Модель для чтения данных о фильме.
+    """
+
+
 class MovieUpdate(MovieBase):
     """
     Модель для обновления информации о фильме.
@@ -66,3 +72,4 @@ class Movie(MovieBase):
     """
 
     slug: str
+    notes: DescriptionString = "service information"
