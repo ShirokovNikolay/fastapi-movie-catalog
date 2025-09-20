@@ -17,6 +17,18 @@ log = logging.getLogger(__name__)
 class MovieStorage(BaseModel):
     slug_to_movie: dict[str, Movie] = {}
 
+    def init_storage_from_state(self) -> None:
+        try:
+            data = MovieStorage.from_state()
+            log.warning("Recovered data from storage file.")
+        except ValidationError:
+            self.save_state()
+            log.warning("Rewritten storage file due to validation error.")
+            return None
+        self.slug_to_movie.update(
+            data.slug_to_movie,
+        )
+
     def save_state(self) -> None:
         MOVIES_STORAGE_FILEPATH.write_text(self.model_dump_json(indent=2))
         log.info("Saved movies to storage file.")
@@ -73,10 +85,4 @@ class MovieStorage(BaseModel):
         return movie
 
 
-try:
-    storage = MovieStorage.from_state()
-    log.warning("Recovered data from storage file.")
-except ValidationError:
-    storage = MovieStorage()
-    storage.save_state()
-    log.warning("Rewritten storage file due to validation error.")
+storage = MovieStorage()
