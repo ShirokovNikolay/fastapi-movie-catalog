@@ -1,4 +1,4 @@
-from fastapi import HTTPException
+from fastapi import HTTPException, BackgroundTasks
 from starlette import status
 
 from .crud import storage
@@ -13,3 +13,6 @@ def prefetch_movie(slug: str) -> Movie:
         status_code=status.HTTP_404_NOT_FOUND,
         detail=f"Movie {slug!r} not found",
     )
+
+def save_storage_state(background_tasks: BackgroundTasks) -> None:
+    pass
