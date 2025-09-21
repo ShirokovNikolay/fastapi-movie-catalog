@@ -14,5 +14,6 @@ def prefetch_movie(slug: str) -> Movie:
         detail=f"Movie {slug!r} not found",
     )
 
+
 def save_storage_state(background_tasks: BackgroundTasks) -> None:
     pass

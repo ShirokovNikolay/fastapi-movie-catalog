@@ -50,19 +50,20 @@ class MovieStorage(BaseModel):
         movie = Movie(**create_movie.model_dump())
         self.slug_to_movie[movie.slug] = movie
         log.info(
-            "Created new movie: slug = %s, name = %s.",
-            movie.slug,
-            movie.name,
+            "Created movie %s",
+            movie,
         )
-        self.save_state()
         return movie
 
     def delete_by_slug(self, slug: str) -> None:
         self.slug_to_movie.pop(slug, None)
-        self.save_state()
 
     def delete(self, movie: Movie) -> None:
         self.delete_by_slug(slug=movie.slug)
+        log.info(
+            "Deleted movie %s",
+            movie,
+        )
 
     def update(
         self,
@@ -71,7 +72,10 @@ class MovieStorage(BaseModel):
     ) -> Movie:
         for field_name, value in movie_in:
             setattr(movie, field_name, value)
-        self.save_state()
+        log.info(
+            "Updated movie %s",
+            movie,
+        )
         return movie
 
     def update_partial(
@@ -79,9 +83,14 @@ class MovieStorage(BaseModel):
         movie: Movie,
         movie_in: MoviePartialUpdate,
     ) -> Movie:
+        parameters = []
         for field_name, value in movie_in.model_dump(exclude_unset=True).items():
             setattr(movie, field_name, value)
-        self.save_state()
+            parameters.append("%s=%r" % (field_name, value))
+        log.info(
+            "Updated partial movie %s",
+            " ".join(parameters),
+        )
         return movie
 
 
