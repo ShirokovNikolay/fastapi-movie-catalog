@@ -16,11 +16,11 @@ router = APIRouter(
     prefix="/{slug}",
     responses={
         status.HTTP_404_NOT_FOUND: {
-            "description": "Movie not found",
+            "description": "Movie not found.",
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": "Movie 'slug' not found",
+                        "detail": "Movie 'slug' not found.",
                     },
                 },
             },
