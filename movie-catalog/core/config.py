@@ -20,3 +20,7 @@ USERS_DB: dict[str, str] = {
     "Nikolay": "qwerty",
     "Ivan": "password",
 }
+
+REDIS_HOST = "localhost"
+REDIS_PORT = 6379
+REDIS_DB = 0
