@@ -49,6 +49,13 @@ class MovieStorage(BaseModel):
             return MovieStorage()
         return cls.model_validate_json(MOVIES_STORAGE_FILEPATH.read_text())
 
+    def save_movie(self, movie: Movie) -> None:
+        redis.hset(
+            name=config.REDIS_MOVIES_HASH_NAME,
+            key=movie.slug,
+            value=movie.model_dump_json(),
+        )
+
     def get(self) -> list[Movie]:
         return [
             Movie.model_validate_json(value)
@@ -65,11 +72,7 @@ class MovieStorage(BaseModel):
     def create(self, create_movie: MovieCreate) -> Movie:
         movie = Movie(**create_movie.model_dump())
         self.slug_to_movie[movie.slug] = movie
-        redis.hset(
-            name=config.REDIS_MOVIES_HASH_NAME,
-            key=movie.slug,
-            value=movie.model_dump_json(),
-        )
+        self.save_movie(movie)
         log.info(
             "Created movie %s",
             movie,
@@ -93,6 +96,7 @@ class MovieStorage(BaseModel):
     ) -> Movie:
         for field_name, value in movie_in:
             setattr(movie, field_name, value)
+        self.save_movie(movie)
         log.info(
             "Updated movie %s",
             movie,
@@ -108,6 +112,7 @@ class MovieStorage(BaseModel):
         for field_name, value in movie_in.model_dump(exclude_unset=True).items():
             setattr(movie, field_name, value)
             parameters.append("%s=%r" % (field_name, value))
+        self.save_movie(movie)
         log.info(
             "Updated partial movie %s",
             " ".join(parameters),
