@@ -1,6 +1,6 @@
 import logging
 
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel
 from redis import Redis
 
 from core import config
@@ -11,7 +11,6 @@ from schemas.movie import (
     MoviePartialUpdate,
 )
 
-from core.config import MOVIES_STORAGE_FILEPATH
 
 log = logging.getLogger(__name__)
 
@@ -24,30 +23,6 @@ redis = Redis(
 
 
 class MovieStorage(BaseModel):
-    slug_to_movie: dict[str, Movie] = {}
-
-    def init_storage_from_state(self) -> None:
-        try:
-            data = MovieStorage.from_state()
-            log.warning("Recovered data from storage file.")
-        except ValidationError:
-            self.save_state()
-            log.warning("Rewritten storage file due to validation error.")
-            return None
-        self.slug_to_movie.update(
-            data.slug_to_movie,
-        )
-
-    def save_state(self) -> None:
-        MOVIES_STORAGE_FILEPATH.write_text(self.model_dump_json(indent=2))
-        log.info("Saved movies to storage file.")
-
-    @classmethod
-    def from_state(cls) -> "MovieStorage":
-        if not MOVIES_STORAGE_FILEPATH.exists():
-            log.info("Movies storage file doesn't exist.")
-            return MovieStorage()
-        return cls.model_validate_json(MOVIES_STORAGE_FILEPATH.read_text())
 
     def save_movie(self, movie: Movie) -> None:
         redis.hset(
@@ -55,6 +30,7 @@ class MovieStorage(BaseModel):
             key=movie.slug,
             value=movie.model_dump_json(),
         )
+        log.info("Saved movie to storage.")
 
     def get(self) -> list[Movie]:
         return [
@@ -71,7 +47,6 @@ class MovieStorage(BaseModel):
 
     def create(self, create_movie: MovieCreate) -> Movie:
         movie = Movie(**create_movie.model_dump())
-        self.slug_to_movie[movie.slug] = movie
         self.save_movie(movie)
         log.info(
             "Created movie %s",
@@ -84,7 +59,6 @@ class MovieStorage(BaseModel):
             config.REDIS_MOVIES_HASH_NAME,
             slug,
         )
-        self.slug_to_movie.pop(slug, None)
 
     def delete(self, movie: Movie) -> None:
         self.delete_by_slug(slug=movie.slug)
