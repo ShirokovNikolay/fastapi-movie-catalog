@@ -50,7 +50,10 @@ class MovieStorage(BaseModel):
         return cls.model_validate_json(MOVIES_STORAGE_FILEPATH.read_text())
 
     def get(self) -> list[Movie]:
-        return list(self.slug_to_movie.values())
+        return [
+            Movie.model_validate_json(value)
+            for value in redis.hvals(name=config.REDIS_MOVIES_HASH_NAME)
+        ]
 
     def get_by_slug(self, slug) -> Movie | None:
         if data := redis.hget(
