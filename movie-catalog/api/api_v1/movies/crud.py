@@ -53,7 +53,11 @@ class MovieStorage(BaseModel):
         return list(self.slug_to_movie.values())
 
     def get_by_slug(self, slug) -> Movie | None:
-        return self.slug_to_movie.get(slug)
+        if data := redis.hget(
+            name=config.REDIS_MOVIES_HASH_NAME,
+            key=slug,
+        ):
+            return Movie.model_validate_json(data)
 
     def create(self, create_movie: MovieCreate) -> Movie:
         movie = Movie(**create_movie.model_dump())
