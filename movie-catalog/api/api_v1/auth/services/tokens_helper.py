@@ -45,4 +45,16 @@ class AbstractTokensHelper(ABC):
     def get_tokens(self) -> list[str]:
         """
         Получение списка всех токенов из хранилища.
+
+        :param:
+        :return:
+        """
+
+    @abstractmethod
+    def delete_token(self, token: str) -> None:
+        """
+        Удаление токена из хранилища.
+
+        :param token:
+        :return:
         """
