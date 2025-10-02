@@ -1,3 +1,4 @@
+__all__ = "app"
 import typer
 from .hello import app as hello_app
 from .tokens import app as tokens_app
