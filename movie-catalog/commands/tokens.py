@@ -44,3 +44,51 @@ def list_tokens() -> None:
     print(Markdown("# Available API tokens"))
     print(Markdown("\n- ".join([""] + tokens.get_tokens())))
     print()
+
+
+@app.command()
+def create() -> None:
+    """
+    Create a new token and save to database.
+    """
+    new_token = tokens.generate_and_save_token()
+    print(f"New token [bold green]{new_token} saved to database[/green bold].")
+
+
+@app.command()
+def add(
+    token: Annotated[
+        str,
+        typer.Argument(
+            help="The token to add.",
+        ),
+    ],
+) -> None:
+    """
+    Add a new token if such token doesn't exist.
+    """
+    if tokens.token_exists(token):
+        print(f"Token [bold]{token}[/bold] [red]already exists[/red].")
+        return
+    tokens.add_token(token)
+    print(f"Token [bold]{token}[/bold] [green]added to database[/green].")
+
+
+@app.command(name="rm")
+def delete_token(
+    token: Annotated[
+        str,
+        typer.Argument(
+            help="The token to delete.",
+        ),
+    ],
+) -> None:
+    """
+    Delete a token if such token exists.
+    """
+    if not tokens.token_exists(token):
+        print(f"Token [bold]{token} [red]does not exist[/red][/bold].")
+        return
+
+    tokens.delete_token(token)
+    print(f"Token [bold]{token}[/bold] [green]removed from database[/green].")
