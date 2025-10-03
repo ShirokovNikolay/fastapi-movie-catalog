@@ -1,5 +1,7 @@
 from redis import Redis
 
+from typing import reveal_type
+
 from core import config
 
 redis = Redis(
@@ -10,20 +12,29 @@ redis = Redis(
 )
 
 
-def main():
+def add(a: int, b: int) -> int:
+    return a + b
+
+
+def main() -> None:
+    a = 1
+    b = 2
+    c = add(a, b)
+    print("Type c:", type(c))
+    reveal_type(c)
     print(redis.ping())
     redis.set("name", "Nikolay")
+    redis.set("foo", "bar")
     redis.set("number", "42")
-    redis.set("test", "True")
     print(
         [
-            redis.get("name"),
+            redis.get("foo"),
             redis.get("number"),
             redis.get("spam"),
         ]
     )
-    redis.delete("test")
-    print(redis.get("test"))
+    redis.delete("name")
+    print(redis.get("name"))
 
 
 if __name__ == "__main__":
