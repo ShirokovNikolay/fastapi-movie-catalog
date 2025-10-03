@@ -25,7 +25,7 @@ RatingString = Annotated[
 
 class MovieBase(BaseModel):
     name: NameString
-    description: DescriptionString
+    description: DescriptionString = ""
     rating: RatingString
 
 
@@ -56,7 +56,7 @@ class MovieUpdate(MovieBase):
     """
 
 
-class MoviePartialUpdate(MovieBase):
+class MoviePartialUpdate(BaseModel):
     """
     Модель для частичного обновления информации о фильме.
     """
