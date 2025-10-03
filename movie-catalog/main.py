@@ -1,13 +1,12 @@
 import logging
 
+from api import router as api_router
+from app_lifespan import lifespan
+from core import config
 from fastapi import (
     FastAPI,
     Request,
 )
-
-from api import router as api_router
-from core import config
-from app_lifespan import lifespan
 
 logging.basicConfig(
     level=config.LOG_LEVEL,
@@ -25,7 +24,7 @@ app.include_router(api_router)
 def read_root(
     request: Request,
     name: str = "World",
-):
+) -> None:
     docs_url = request.url.replace(
         path="/docs",
         query="",

@@ -1,18 +1,18 @@
 from fastapi import (
     APIRouter,
-    status,
     Depends,
     HTTPException,
-)
-
-from api.api_v1.movies.crud import storage, MovieAlreadyExistsError
-from api.api_v1.movies.dependencies import (
-    api_token_or_basic_auth_required_for_unsafe_methods,
+    status,
 )
 from schemas.movie import (
     Movie,
     MovieCreate,
     MovieRead,
+)
+
+from api.api_v1.movies.crud import MovieAlreadyExistsError, storage
+from api.api_v1.movies.dependencies import (
+    api_token_or_basic_auth_required_for_unsafe_methods,
 )
 
 router = APIRouter(
@@ -70,4 +70,4 @@ def create_movie(
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail=f"Movie with slug={movie_create.slug!r} already exists.",
-        )
+        ) from None

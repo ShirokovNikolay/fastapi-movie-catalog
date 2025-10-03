@@ -1,9 +1,9 @@
 from typing import cast
 
+from core import config
 from redis import Redis
 
 from api.api_v1.auth.services.tokens_helper import AbstractTokensHelper
-from core import config
 
 
 class RedisTokensHelper(AbstractTokensHelper):
@@ -27,7 +27,7 @@ class RedisTokensHelper(AbstractTokensHelper):
             self.redis.sismember(
                 self.tokens_set,
                 token,
-            )
+            ),
         )
 
     def add_token(self, token: str) -> None:

@@ -1,16 +1,16 @@
 from typing import Annotated
 
-from fastapi import Depends, APIRouter
+from fastapi import APIRouter, Depends
+from schemas.movie import (
+    Movie,
+    MoviePartialUpdate,
+    MovieRead,
+    MovieUpdate,
+)
 from starlette import status
 
 from api.api_v1.movies.crud import storage
 from api.api_v1.movies.dependencies import prefetch_movie
-from schemas.movie import (
-    Movie,
-    MovieRead,
-    MovieUpdate,
-    MoviePartialUpdate,
-)
 
 router = APIRouter(
     prefix="/{slug}",

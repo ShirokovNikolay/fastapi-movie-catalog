@@ -1,8 +1,7 @@
-from redis import Redis
-
 from typing import reveal_type
 
 from core import config
+from redis import Redis
 
 redis = Redis(
     host=config.REDIS_HOST,
@@ -31,7 +30,7 @@ def main() -> None:
             redis.get("foo"),
             redis.get("number"),
             redis.get("spam"),
-        ]
+        ],
     )
     redis.delete("name")
     print(redis.get("name"))

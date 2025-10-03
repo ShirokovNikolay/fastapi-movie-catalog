@@ -2,17 +2,15 @@ import logging
 from collections.abc import Iterable
 from typing import cast
 
+from core import config
 from pydantic import BaseModel
 from redis import Redis
-
-from core import config
 from schemas.movie import (
     Movie,
     MovieCreate,
-    MovieUpdate,
     MoviePartialUpdate,
+    MovieUpdate,
 )
-
 
 log = logging.getLogger(__name__)
 
@@ -50,7 +48,8 @@ class MovieStorage(BaseModel):
         return [
             Movie.model_validate_json(value)
             for value in cast(
-                Iterable[str], redis.hvals(name=config.REDIS_MOVIES_HASH_NAME)
+                Iterable[str],
+                redis.hvals(name=config.REDIS_MOVIES_HASH_NAME),
             )
         ]
 
@@ -69,7 +68,7 @@ class MovieStorage(BaseModel):
             redis.hexists(
                 name=config.REDIS_MOVIES_HASH_NAME,
                 key=slug,
-            )
+            ),
         )
 
     def create(self, create_movie: MovieCreate) -> Movie:
@@ -121,7 +120,7 @@ class MovieStorage(BaseModel):
         parameters = []
         for field_name, value in movie_in.model_dump(exclude_unset=True).items():
             setattr(movie, field_name, value)
-            parameters.append("%s=%r" % (field_name, value))
+            parameters.append("%s=%r" % (field_name, value))  # noqa: UP031
         self.save_movie(movie)
         log.info(
             "Updated partial movie %s",

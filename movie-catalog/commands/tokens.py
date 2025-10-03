@@ -1,10 +1,9 @@
 from typing import Annotated
 
 import typer
+from api.api_v1.auth.services import redis_tokens as tokens
 from rich import print
 from rich.markdown import Markdown
-
-from api.api_v1.auth.services import redis_tokens as tokens
 
 app = typer.Typer(
     name="token",
@@ -42,7 +41,7 @@ def list_tokens() -> None:
     List all tokens.
     """
     print(Markdown("# Available API tokens"))
-    print(Markdown("\n- ".join([""] + tokens.get_tokens())))
+    print(Markdown("\n- ".join(["", *tokens.get_tokens()])))
     print()
 
 
