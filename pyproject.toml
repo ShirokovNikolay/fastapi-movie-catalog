@@ -14,3 +14,9 @@ dependencies = [
 dev = [
     "mypy>=1.18.2",
 ]
+
+[mypy.tool]
+strict= true
+plugins = [
+    "pydantic.mypy",
+]
