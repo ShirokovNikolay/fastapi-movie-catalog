@@ -1,6 +1,11 @@
 from unittest import TestCase
 
-from schemas.movie import Movie, MovieCreate, MovieUpdate
+from schemas.movie import (
+    Movie,
+    MovieCreate,
+    MoviePartialUpdate,
+    MovieUpdate,
+)
 
 
 class MovieCreateTestCase(TestCase):
@@ -59,3 +64,50 @@ class MovieUpdateTestCase(TestCase):
         for field, value in movie_update:
             setattr(movie, field, value)
             assert getattr(movie, field) == value
+
+
+class MoviePartialUpdateTestCase(TestCase):
+    def test_empty_movie_partial_update_schema_correctly_updates_the_movie_schema(
+        self,
+    ) -> None:
+        movie_in = MovieCreate(
+            slug="some-slug",
+            name="some-name",
+            description="some-description",
+            rating=7,
+        )
+
+        movie = Movie(**movie_in.model_dump())
+        movie_copy = movie.model_copy()
+        movie_empty_partial_update = MoviePartialUpdate()
+
+        for field, value in movie_empty_partial_update:
+            if value is not None:
+                setattr(movie, field, value)
+                assert getattr(movie, field) == value
+            else:
+                assert getattr(movie, field) == getattr(movie_copy, field)
+
+    def test_movie_partial_update_schema_correctly_updates_the_movie_schema(
+        self,
+    ) -> None:
+        movie_in = MovieCreate(
+            slug="some-slug",
+            name="some-name",
+            description="some-description",
+            rating=7,
+        )
+
+        movie = Movie(**movie_in.model_dump())
+        movie_copy = movie.model_copy()
+        movie_partial_update = MoviePartialUpdate(
+            name="new-name",
+            description="new-description",
+        )
+
+        for field, value in movie_partial_update:
+            if value is not None:
+                setattr(movie, field, value)
+                assert getattr(movie, field) == value
+            else:
+                assert getattr(movie, field) == getattr(movie_copy, field)
