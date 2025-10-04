@@ -30,3 +30,10 @@ class MovieCreateTestCase(TestCase):
             movie_in.rating,
             movie.rating,
         )
+
+    def test_all_fields_from_movie_create_schema_are_contained_in_movie_schema(
+        self,
+    ) -> None:
+        movie_schema_fields = set(Movie.model_fields.keys())
+        for field in MovieCreate.model_fields:
+            assert field in movie_schema_fields
