@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from schemas.movie import Movie, MovieCreate
+from schemas.movie import Movie, MovieCreate, MovieUpdate
 
 
 class MovieCreateTestCase(TestCase):
@@ -37,3 +37,25 @@ class MovieCreateTestCase(TestCase):
         movie_schema_fields = set(Movie.model_fields.keys())
         for field in MovieCreate.model_fields:
             assert field in movie_schema_fields
+
+
+class MovieUpdateTestCase(TestCase):
+    def test_movie_update_schema_correctly_updates_the_movie_schema(self) -> None:
+        movie_in = MovieCreate(
+            slug="some-slug",
+            name="some-name",
+            description="some-description",
+            rating=7,
+        )
+
+        movie = Movie(**movie_in.model_dump())
+
+        movie_update = MovieUpdate(
+            name="new-name",
+            description="new-description",
+            rating=10,
+        )
+
+        for field, value in movie_update:
+            setattr(movie, field, value)
+            assert getattr(movie, field) == value
