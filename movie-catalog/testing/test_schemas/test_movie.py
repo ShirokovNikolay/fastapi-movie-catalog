@@ -43,6 +43,54 @@ class MovieCreateTestCase(TestCase):
         for field in MovieCreate.model_fields:
             assert field in movie_schema_fields
 
+    def test_movie_create_accepts_different_names(self) -> None:
+        names = [
+            "some-name",
+            "new-name",
+            "some-other-name",
+            "name " * 4,
+        ]
+        for name in names:
+            with self.subTest(name=name, msg=f"test-name - {name}"):
+                movie_create = MovieCreate(
+                    slug="some-slug",
+                    name=name,
+                    description="some-description",
+                    rating=7,
+                )
+                self.assertEqual(name, movie_create.name)
+
+    def test_movie_create_accepts_different_descriptions(self) -> None:
+        descriptions = [
+            "some-description",
+            "new-description",
+            "some-other-description",
+            "description " * 5,
+        ]
+        for description in descriptions:
+            with self.subTest(
+                description=description,
+                msg=f"test-description - {description}",
+            ):
+                movie_create = MovieCreate(
+                    slug="some-slug",
+                    name="some-name",
+                    description=description,
+                    rating=8,
+                )
+                self.assertEqual(description, movie_create.description)
+
+    def test_movie_create_accepts_different_ratings(self) -> None:
+        for rating in range(1, 11):
+            with self.subTest(rating=rating, msg=f"test-rating - {rating}"):
+                movie_create = MovieCreate(
+                    slug="some-slug",
+                    name="some-name",
+                    description="some-description",
+                    rating=rating,
+                )
+                self.assertEqual(rating, movie_create.rating)
+
 
 class MovieUpdateTestCase(TestCase):
     def test_movie_update_schema_correctly_updates_the_movie_schema(self) -> None:
