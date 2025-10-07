@@ -34,7 +34,7 @@ class MovieAlreadyExistsError(MovieBaseError):
     """
 
 
-class MovieStorage(BaseModel):
+class MoviesStorage(BaseModel):
 
     def save_movie(self, movie: Movie) -> None:
         redis.hset(
@@ -129,4 +129,4 @@ class MovieStorage(BaseModel):
         return movie
 
 
-storage = MovieStorage()
+storage = MoviesStorage()
