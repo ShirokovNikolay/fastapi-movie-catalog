@@ -4,6 +4,7 @@ from os import getenv
 from typing import ClassVar
 from unittest import TestCase
 
+import pytest
 from api.api_v1.movies.crud import storage
 from schemas.movie import (
     Movie,
@@ -13,8 +14,8 @@ from schemas.movie import (
 )
 
 if getenv("TESTING") != "1":
-    raise OSError(  # noqa: TRY003
-        "Environment is not ready for start.",  # noqa: EM101
+    pytest.exit(
+        "Environment is not ready for start.",
     )
 
 
