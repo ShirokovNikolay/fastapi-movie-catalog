@@ -1,7 +1,7 @@
 [project]
-name = "fastapi-url-shortener"
+name = "fastapi-movie-catalog"
 version = "0.1.0"
-description = "FastAPI URL Shortener"
+description = "FastAPI Movie Catalog"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
@@ -35,7 +35,7 @@ plugins = [
 required-version = ">=0.11.5"
 
 src = [
-    "url-shortener",
+    "movie-catalog",
 ]
 
 # Exclude a variety of commonly ignored directories.
