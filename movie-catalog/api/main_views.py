@@ -13,6 +13,6 @@ def read_root(
         query="",
     )
     return {
-        "message": f"Hello {name}",
+        "message": f"Hello {name}!",
         "docs": str(docs_url),
     }
