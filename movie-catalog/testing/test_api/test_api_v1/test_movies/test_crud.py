@@ -1,5 +1,6 @@
 import random
 import string
+from collections.abc import Generator
 from typing import ClassVar
 from unittest import TestCase
 
@@ -29,8 +30,11 @@ def create_movie() -> Movie:
     return storage.create(movie_in)
 
 
-def movie() -> Movie:
-    return create_movie()
+@pytest.fixture()
+def movie() -> Generator[Movie]:
+    movie = create_movie()
+    yield movie
+    storage.delete(movie)
 
 
 class MoviesStorageUpdateTestCase(TestCase):
@@ -111,7 +115,6 @@ class MoviesStorageGetTestCase(TestCase):
                 self.assertEqual(movie, db_movie)
 
 
-@pytest.fixture()
 def test_create_or_raise_if_exists(movie: Movie) -> None:
     movie_create = MovieCreate(**movie.model_dump())
     with pytest.raises(
