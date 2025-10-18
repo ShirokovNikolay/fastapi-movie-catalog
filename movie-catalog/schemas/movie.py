@@ -24,7 +24,7 @@ RatingString = Annotated[
 
 class MovieBase(BaseModel):
     name: NameString
-    description: DescriptionString = ""
+    description: DescriptionString
     rating: RatingString
 
 
@@ -41,12 +41,15 @@ class MovieCreate(MovieBase):
             max_length=10,
         ),
     ]
+    description: DescriptionString = ""
 
 
 class MovieRead(MovieBase):
     """
     Модель для чтения данных о фильме.
     """
+
+    slug: str
 
 
 class MovieUpdate(MovieBase):
