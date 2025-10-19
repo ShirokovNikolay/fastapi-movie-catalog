@@ -10,12 +10,12 @@ from schemas.movie import (
     MoviePartialUpdate,
     MovieUpdate,
 )
-from testing.conftest import create_movie
+from testing.conftest import create_movie_random_slug
 
 
 class MoviesStorageUpdateTestCase(TestCase):
     def setUp(self) -> None:
-        self.movie = create_movie()
+        self.movie = create_movie_random_slug()
 
     def tearDown(self) -> None:
         storage.delete(self.movie)
@@ -66,7 +66,7 @@ class MoviesStorageGetTestCase(TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.movies = [create_movie() for _ in range(cls.MOVIES_COUNT)]
+        cls.movies = [create_movie_random_slug() for _ in range(cls.MOVIES_COUNT)]
 
     @classmethod
     def tearDownClass(cls) -> None:

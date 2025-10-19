@@ -5,17 +5,8 @@ from starlette.testclient import TestClient
 
 from api.api_v1.movies.crud import storage
 from main import app
-from schemas.movie import Movie, MovieCreate
-
-
-def create_movie(slug: str) -> Movie:
-    movie_in = MovieCreate(
-        slug=slug,
-        name="some-movie-name",
-        description="some-description",
-        rating=8,
-    )
-    return storage.create(movie_in)
+from schemas.movie import Movie
+from testing.conftest import create_movie
 
 
 @pytest.fixture(
