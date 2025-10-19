@@ -14,16 +14,21 @@ if getenv("TESTING") != "1":
     )
 
 
-def build_movie_create(slug: str) -> MovieCreate:
+def build_movie_create(
+    slug: str,
+    description: str = "some-description",
+) -> MovieCreate:
     return MovieCreate(
         slug=slug,
         name="some-movie-name",
-        description="some-description",
+        description=description,
         rating=8,
     )
 
 
-def build_movie_create_random_slug() -> MovieCreate:
+def build_movie_create_random_slug(
+    description: str = "some-description",
+) -> MovieCreate:
     return MovieCreate(
         slug="".join(
             random.choices(  # noqa: S311
@@ -32,18 +37,28 @@ def build_movie_create_random_slug() -> MovieCreate:
             ),
         ),
         name="some-movie-name",
-        description="some-description",
+        description=description,
         rating=8,
     )
 
 
-def create_movie(slug: str) -> Movie:
-    movie_in = build_movie_create(slug)
+def create_movie(
+    slug: str,
+    description: str = "some-description",
+) -> Movie:
+    movie_in = build_movie_create(
+        slug=slug,
+        description=description,
+    )
     return storage.create(movie_in)
 
 
-def create_movie_random_slug() -> Movie:
-    movie_in = build_movie_create_random_slug()
+def create_movie_random_slug(
+    description: str = "some-description",
+) -> Movie:
+    movie_in = build_movie_create_random_slug(
+        description=description,
+    )
     return storage.create(movie_in)
 
 
