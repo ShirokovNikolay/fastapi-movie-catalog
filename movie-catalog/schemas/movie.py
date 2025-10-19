@@ -8,9 +8,11 @@ NameString = Annotated[
     MaxLen(20),
 ]
 
+DESCRIPTION_MAX_LENGTH = 200
+
 DescriptionString = Annotated[
     str,
-    MaxLen(200),
+    MaxLen(DESCRIPTION_MAX_LENGTH),
 ]
 
 RatingString = Annotated[
