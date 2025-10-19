@@ -44,7 +44,7 @@ def test_create_movie_already_exists(auth_client: TestClient, movie: Movie) -> N
     assert response_data["detail"] == expected_error_detail, response_data
 
 
-class TestCreateInvalidMovie:
+class TestCreateInvalid:
     @pytest.fixture(
         params=[
             pytest.param(
