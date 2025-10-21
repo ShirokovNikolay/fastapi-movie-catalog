@@ -1,6 +1,7 @@
 from unittest import TestCase
 
 from pydantic import ValidationError
+
 from schemas.movie import (
     Movie,
     MovieCreate,
@@ -13,7 +14,7 @@ class MovieCreateTestCase(TestCase):
     def test_movie_can_be_created_from_create_movie_schema(self) -> None:
         movie_in = MovieCreate(
             slug="some-slug",
-            name="some-name",
+            title="some-title",
             description="some-description",
             rating=7,
         )
@@ -25,8 +26,8 @@ class MovieCreateTestCase(TestCase):
             movie.slug,
         )
         self.assertEqual(
-            movie_in.name,
-            movie.name,
+            movie_in.title,
+            movie.title,
         )
         self.assertEqual(
             movie_in.description,
@@ -44,22 +45,22 @@ class MovieCreateTestCase(TestCase):
         for field in MovieCreate.model_fields:
             assert field in movie_schema_fields
 
-    def test_movie_create_accepts_different_names(self) -> None:
-        names = [
-            "some-name",
-            "new-name",
-            "some-other-name",
-            "name " * 4,
+    def test_movie_create_accepts_different_titles(self) -> None:
+        titles = [
+            "some-title",
+            "new-title",
+            "some-other-title",
+            "title " * 3,
         ]
-        for name in names:
-            with self.subTest(name=name, msg=f"test-name - {name}"):
+        for title in titles:
+            with self.subTest(title=title, msg=f"test-title - {title}"):
                 movie_create = MovieCreate(
                     slug="some-slug",
-                    name=name,
+                    title=title,
                     description="some-description",
                     rating=7,
                 )
-                self.assertEqual(name, movie_create.name)
+                self.assertEqual(title, movie_create.title)
 
     def test_movie_create_accepts_different_descriptions(self) -> None:
         descriptions = [
@@ -75,7 +76,7 @@ class MovieCreateTestCase(TestCase):
             ):
                 movie_create = MovieCreate(
                     slug="some-slug",
-                    name="some-name",
+                    title="some-title",
                     description=description,
                     rating=8,
                 )
@@ -86,7 +87,7 @@ class MovieCreateTestCase(TestCase):
             with self.subTest(rating=rating, msg=f"test-rating - {rating}"):
                 movie_create = MovieCreate(
                     slug="some-slug",
-                    name="some-name",
+                    title="some-title",
                     description="some-description",
                     rating=rating,
                 )
@@ -96,7 +97,7 @@ class MovieCreateTestCase(TestCase):
         with self.assertRaises(ValidationError) as exc_info:
             MovieCreate(
                 slug="s",
-                name="some-name",
+                title="some-title",
                 description="some-description",
                 rating=8,
             )
@@ -115,7 +116,7 @@ class MovieCreateTestCase(TestCase):
         ):
             MovieCreate(
                 slug="s",
-                name="some-name",
+                title="some-title",
                 description="some-description",
                 rating=8,
             )
@@ -125,7 +126,7 @@ class MovieUpdateTestCase(TestCase):
     def test_movie_update_schema_correctly_updates_the_movie_schema(self) -> None:
         movie_in = MovieCreate(
             slug="some-slug",
-            name="some-name",
+            title="some-title",
             description="some-description",
             rating=7,
         )
@@ -133,7 +134,7 @@ class MovieUpdateTestCase(TestCase):
         movie = Movie(**movie_in.model_dump())
 
         movie_update = MovieUpdate(
-            name="new-name",
+            title="new-title",
             description="new-description",
             rating=10,
         )
@@ -149,7 +150,7 @@ class MoviePartialUpdateTestCase(TestCase):
     ) -> None:
         movie_in = MovieCreate(
             slug="some-slug",
-            name="some-name",
+            title="some-title",
             description="some-description",
             rating=7,
         )
@@ -170,7 +171,7 @@ class MoviePartialUpdateTestCase(TestCase):
     ) -> None:
         movie_in = MovieCreate(
             slug="some-slug",
-            name="some-name",
+            title="some-title",
             description="some-description",
             rating=7,
         )
@@ -178,7 +179,7 @@ class MoviePartialUpdateTestCase(TestCase):
         movie = Movie(**movie_in.model_dump())
         movie_copy = movie.model_copy()
         movie_partial_update = MoviePartialUpdate(
-            name="new-name",
+            title="new-title",
             description="new-description",
         )
 

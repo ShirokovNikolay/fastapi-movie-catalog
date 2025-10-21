@@ -3,7 +3,7 @@ from typing import Annotated
 from annotated_types import Len, MaxLen
 from pydantic import BaseModel, Field
 
-NameString = Annotated[
+TitleString = Annotated[
     str,
     MaxLen(20),
 ]
@@ -25,7 +25,7 @@ RatingString = Annotated[
 
 
 class MovieBase(BaseModel):
-    name: NameString
+    title: TitleString
     description: DescriptionString
     rating: RatingString
 
@@ -65,7 +65,7 @@ class MoviePartialUpdate(BaseModel):
     Модель для частичного обновления информации о фильме.
     """
 
-    name: NameString | None = None
+    title: TitleString | None = None
     description: DescriptionString | None = None
     rating: RatingString | None = None
 

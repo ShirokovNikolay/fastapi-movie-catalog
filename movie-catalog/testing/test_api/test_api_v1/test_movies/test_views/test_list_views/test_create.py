@@ -21,7 +21,7 @@ def test_create_movie(auth_client: TestClient) -> None:
                 k=8,
             ),
         ),
-        name="some-movie-name",
+        title="some-movie-title",
         description="some-description",
         rating=8,
     )
