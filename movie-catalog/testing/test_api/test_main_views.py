@@ -2,6 +2,8 @@ import pytest
 from fastapi import status
 from fastapi.testclient import TestClient
 
+pytestmark = pytest.mark.apitest
+
 
 def test_read_root(client: TestClient) -> None:
     response = client.get("/")
