@@ -7,7 +7,7 @@ from starlette.testclient import TestClient
 
 from api.api_v1.movies.crud import storage
 from main import app
-from schemas.movie import Movie, MovieUpdate
+from schemas.movie import DESCRIPTION_MAX_LENGTH, Movie, MovieUpdate
 from testing.conftest import create_movie_random_slug
 
 
@@ -31,8 +31,29 @@ class TestUpdate:
                 ("title", "description", 8),
                 "new_title",
                 "new_description",
-                8,
-                id="base-test",
+                10,
+                id="new-title-new-description-new-rating",
+            ),
+            pytest.param(
+                ("title", "description", 5),
+                "title",
+                "a" * DESCRIPTION_MAX_LENGTH,
+                5,
+                id="max-length-new-description",
+            ),
+            pytest.param(
+                ("title", "description", 3),
+                "title",
+                "description",
+                3,
+                id="no-changes",
+            ),
+            pytest.param(
+                ("title", "description", 9),
+                "",
+                "",
+                9,
+                id="empty-new-title-and-empty-new-description",
             ),
         ],
         indirect=["movie"],
