@@ -1,16 +1,16 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
+from starlette import status
+
+from api.api_v1.movies.crud import storage
+from api.api_v1.movies.dependencies import prefetch_movie
 from schemas.movie import (
     Movie,
     MoviePartialUpdate,
     MovieRead,
     MovieUpdate,
 )
-from starlette import status
-
-from api.api_v1.movies.crud import storage
-from api.api_v1.movies.dependencies import prefetch_movie
 
 router = APIRouter(
     prefix="/{slug}",
@@ -78,3 +78,10 @@ def update_movie_details_partial(
 )
 def delete_movie(movie: MovieBySlug) -> None:
     storage.delete(movie=movie)
+
+
+@router.post(
+    "/transfer/",
+)
+def transfer_movie() -> None:
+    raise NotImplementedError
