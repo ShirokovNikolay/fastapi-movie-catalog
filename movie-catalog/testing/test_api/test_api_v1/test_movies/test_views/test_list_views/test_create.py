@@ -1,3 +1,4 @@
+import logging
 import random
 import string
 from typing import Any
@@ -14,7 +15,11 @@ from testing.conftest import build_movie_create_random_slug
 pytestmark = pytest.mark.apitest
 
 
-def test_create_movie(auth_client: TestClient) -> None:
+def test_create_movie(
+    caplog: pytest.LogCaptureFixture,
+    auth_client: TestClient,
+) -> None:
+    caplog.set_level(logging.INFO)
     url = app.url_path_for("create_movie")
     movie_create = MovieCreate(
         slug="".join(
@@ -33,6 +38,8 @@ def test_create_movie(auth_client: TestClient) -> None:
     response_data = response.json()
     received_values = MovieCreate(**response_data)
     assert received_values == movie_create, response_data
+    assert "Created movie" in caplog.text
+    assert movie_create.slug in caplog.text
 
 
 def test_create_movie_already_exists(auth_client: TestClient, movie: Movie) -> None:
