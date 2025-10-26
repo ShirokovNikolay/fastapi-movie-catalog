@@ -9,9 +9,18 @@ on:
       - master
     paths:
       - movie-catalog/**
+      - .github/workflows/**
 jobs:
-    lint:
+    run-black:
       runs-on: ubuntu-latest
       steps:
-        - name: Placeholder GH Action step
-          run: echo "Hello action!"
+        - uses: actions/checkout@v5
+        - uses: actions/setup-python@v6
+          with:
+            python-version-file: '.python-version'
+        - name: Install Black
+          run: |
+            python -m pip install --upgrade pip
+            pip install "black==25.9.0"
+        - name: Black
+          run: black --check --diff ./
