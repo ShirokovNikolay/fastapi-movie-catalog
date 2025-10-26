@@ -1,7 +1,8 @@
 from typing import reveal_type
 
-from core import config
 from redis import Redis
+
+from core import config
 
 redis = Redis(
     host=config.REDIS_HOST,
@@ -33,7 +34,6 @@ def main() -> None:
         ],
     )
     redis.delete("name")
-    print(redis.get("name"))
 
 
 if __name__ == "__main__":
