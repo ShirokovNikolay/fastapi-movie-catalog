@@ -13,12 +13,12 @@ from fastapi.security import (
     HTTPBasicCredentials,
     HTTPBearer,
 )
-from schemas.movie import Movie
 
 from api.api_v1.auth.services import (
     redis_tokens,
     redis_users,
 )
+from schemas.movie import Movie
 
 from .crud import storage
 

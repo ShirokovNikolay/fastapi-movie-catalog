@@ -1,7 +1,8 @@
 from typing import cast
 
-from core import config
 from redis import Redis
+
+from core import config
 
 from .users_helper import AbstractUsersHelper
 
