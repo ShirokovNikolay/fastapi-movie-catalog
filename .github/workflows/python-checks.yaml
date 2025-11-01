@@ -10,6 +10,7 @@ on:
     paths:
       - movie-catalog/**
       - .github/workflows/**
+
 jobs:
     run-black:
       runs-on: ubuntu-latest
