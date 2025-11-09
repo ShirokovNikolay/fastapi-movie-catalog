@@ -58,6 +58,17 @@ jobs:
         ports:
           - 6379:6379
     steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version-file: ".python-version"
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version-file: "pyproject.toml"
+          enable-cache: true
+      - name: Install dependencies
+        run: uv sync --locked --all-extras --dev
       - run: uv run pytest
         env:
           TESTING: 1
