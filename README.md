@@ -16,7 +16,7 @@ Check GitHub Actions after any push.
 
 ### Setup:
 
-Right click `movie catalog` -> Mark Directory as -> Sources Root
+Right click `movie-catalog` -> Mark Directory as -> Sources Root
 
 
 ### Install dependencies
@@ -37,7 +37,7 @@ pre-commit install
 
 Go to workdir:
 ```shell
-cd url-shortener
+cd movie-catalog
 ```
 
 Run dev server:
