@@ -222,3 +222,4 @@ __marimo__/
 
 movies.json
 .secrets
+config.local.yaml
