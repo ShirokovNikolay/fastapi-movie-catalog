@@ -45,6 +45,7 @@ jobs:
         run: uv run mypy movie-catalog
   run-tests:
     runs-on: ubuntu-latest
+    container: node:20-bookworm-slim
     needs:
       - run-checks
     services:
@@ -55,8 +56,7 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-        ports:
-          - 6379:6379
+
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -72,4 +72,5 @@ jobs:
       - run: uv run pytest
         env:
           TESTING: 1
-          REDIS_PORT: 6379
+          MOVIE__REDIS__CONNECTION__HOST: redis
+          MOVIE__REDIS__CONNECTION__PORT: 6379
